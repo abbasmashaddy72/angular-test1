@@ -1,4 +1,4 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NotifierService } from 'angular-notifier';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -8,21 +8,29 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./signIn.component.scss'],
 })
 export class SignInComponent implements OnInit {
-  public loginForm!: FormGroup;
+  private readonly notifier: NotifierService;
+  login: any = {
+    username: '',
+    password: '',
+  };
 
-  constructor(private authenticationService: AuthenticationService) {}
-
-  ngOnInit() {
-    this.loginForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
-    });
+  constructor(
+    private authenticationService: AuthenticationService,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService;
   }
 
-  public onSubmit() {
-    this.authenticationService.login(
-      this.loginForm.get('username')!.value,
-      this.loginForm!.get('password')!.value
-    );
+  ngOnInit() {}
+
+  onClickSubmit(loginForm: any) {
+    if (this.login.username == '' || this.login.password == '') {
+      this.notifier.notify(
+        'error',
+        'User Name & Password Should not be empty!'
+      );
+      return false;
+    }
+    this.authenticationService.login(this.login.username, this.login.password);
   }
 }

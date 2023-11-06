@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -8,23 +8,25 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
-  public registerForm!: FormGroup;
+  register: any = {
+    username: '',
+    email: '',
+    password: '',
+  };
 
   constructor(private authenticationService: AuthenticationService) {}
 
-  ngOnInit() {
-    this.registerForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
-    });
-  }
+  ngOnInit() {}
 
-  public onSubmit() {
+  onClickSubmit(registerForm: NgForm) {
+    if (this.register.username == '' || this.register.password == '') {
+      alert('User Name & Password Should not be empty');
+      return false;
+    }
     this.authenticationService.register(
-      this.registerForm.get('username')!.value,
-      this.registerForm.get('email')!.value,
-      this.registerForm!.get('password')!.value
+      this.register.username,
+      this.register.email,
+      this.register.password
     );
   }
 }
