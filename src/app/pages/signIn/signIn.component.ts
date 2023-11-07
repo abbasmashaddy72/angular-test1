@@ -1,5 +1,6 @@
-import { NotifierService } from 'angular-notifier';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./signIn.component.scss'],
 })
 export class SignInComponent implements OnInit {
+  private tokenKey = 'token';
   private readonly notifier: NotifierService;
   login: any = {
     username: '',
@@ -16,6 +18,7 @@ export class SignInComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private router: Router,
     notifierService: NotifierService
   ) {
     this.notifier = notifierService;
@@ -25,12 +28,22 @@ export class SignInComponent implements OnInit {
 
   onClickSubmit(loginForm: any) {
     if (this.login.username == '' || this.login.password == '') {
-      this.notifier.notify(
-        'error',
-        'User Name & Password Should not be empty!'
-      );
-      return false;
+      this.notifier.notify('error', 'User Name & Password Should not be empty!');
+      return;
     }
-    this.authenticationService.login(this.login.username, this.login.password);
+
+    this.authenticationService.login(this.login.username, this.login.password)
+      .subscribe(
+        (token) => {
+          localStorage.setItem(this.tokenKey, token);
+          this.router.navigate(['admin/dashboard']);
+        },
+        (error) => {
+          // Handle the error here
+          console.error('Login error:', error);
+          // You can also display an additional error notification if needed
+          this.notifier.notify('error', 'Login failed. Please check your credentials.');
+        }
+      );
   }
 }

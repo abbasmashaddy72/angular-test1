@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthenticationClient } from '../api/authenticationClient.api';
 
 @Injectable({
@@ -13,11 +14,8 @@ export class AuthenticationService {
     private router: Router
   ) {}
 
-  public login(username: string, password: string): void {
-    this.authenticationClient.login(username, password).subscribe((token) => {
-      localStorage.setItem(this.tokenKey, token);
-      this.router.navigate(['admin/dashboard']);
-    });
+  public login(username: string, password: string): Observable<string> {
+    return this.authenticationClient.login(username, password);
   }
 
   public register(username: string, email: string, password: string): void {
