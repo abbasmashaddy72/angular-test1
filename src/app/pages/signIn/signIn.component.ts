@@ -1,49 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NotifierService } from 'angular-notifier';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
+import { NotifierService } from 'angular-notifier'
+import { AuthenticationService } from 'src/app/services/authentication.service'
 
 @Component({
   selector: 'app-signIn',
   templateUrl: './signIn.component.html',
-  styleUrls: ['./signIn.component.scss'],
+  styleUrls: ['./signIn.component.scss']
 })
 export class SignInComponent implements OnInit {
-  private tokenKey = 'token';
-  private readonly notifier: NotifierService;
+  private tokenKey = 'token'
+  private readonly notifier: NotifierService
   login: any = {
     username: '',
-    password: '',
-  };
+    password: ''
+  }
 
-  constructor(
+  constructor (
     private authenticationService: AuthenticationService,
     private router: Router,
     notifierService: NotifierService
   ) {
-    this.notifier = notifierService;
+    this.notifier = notifierService
   }
 
-  ngOnInit() {}
+  ngOnInit () {
+    this.authenticationService.checkLogin()
+  }
 
-  onClickSubmit(loginForm: any) {
+  onClickSubmit (loginForm: any) {
     if (this.login.username == '' || this.login.password == '') {
-      this.notifier.notify('error', 'User Name & Password Should not be empty!');
-      return;
+      this.notifier.notify('error', 'User Name & Password Should not be empty!')
+      return
     }
 
-    this.authenticationService.login(this.login.username, this.login.password)
+    this.authenticationService
+      .login(this.login.username, this.login.password)
       .subscribe(
-        (token) => {
-          localStorage.setItem(this.tokenKey, token);
-          this.router.navigate(['admin/dashboard']);
+        token => {
+          localStorage.setItem(this.tokenKey, JSON.parse(token).token)
+          this.router.navigate(['admin/dashboard'])
         },
-        (error) => {
+        error => {
           // Handle the error here
-          console.error('Login error:', error);
+          console.error('Login error:', error)
           // You can also display an additional error notification if needed
-          this.notifier.notify('error', 'Login failed. Please check your credentials.');
+          this.notifier.notify(
+            'error',
+            'Login failed. Please check your credentials.'
+          )
         }
-      );
+      )
   }
 }
