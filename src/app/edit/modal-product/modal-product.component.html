@@ -1,78 +1,94 @@
-<div *ngIf="editedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-200 bg-opacity-80">
+<div *ngIf="productData" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-200 bg-opacity-80">
   <div class="modal-overlay"></div>
   <div class="w-2/4 p-4 bg-white rounded shadow-lg modal-content">
     <h2 class="mb-4 text-2xl font-semibold">Edit Product</h2>
     <div class="flex justify-center mb-4">
-      <img src="{{editedProduct.imagePath}}" class="h-20 rounded-md" />
+      <img src="{{productData.imagePath}}" class="h-20 rounded-md" />
     </div>
-    <form (ngSubmit)="saveProduct()" #editForm="ngForm" class="grid grid-cols-4 gap-2">
-      <div class="mb-4">
-        <label for="name" class="block mb-2 text-sm font-bold text-gray-700">Product Name</label>
-        <input type="text" id="name" name="name" [(ngModel)]="editedProduct.name"
-          class="w-full p-2 border border-gray-300 rounded">
+    <form (ngSubmit)="saveProduct()" #editForm="ngForm">
+      <div class="grid items-end grid-cols-3 gap-2">
+        <div class="grid items-end grid-cols-3 col-span-3 space-x-2">
+          <p class="col-span-4 text-lg font-medium">Product Details</p>
+          <div>
+            <label for="name" class="block mb-2 text-sm font-bold text-gray-700">Name</label>
+            <input type="text" id="name" name="name" [(ngModel)]="productData.name"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+          <div>
+            <label for="productTypeName" class="block mb-2 text-sm font-bold text-gray-700">Type Name</label>
+            <input type="text" id="productTypeName" name="productTypeName" [(ngModel)]="productData.productTypeName"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+          <div>
+            <label for="weight" class="block mb-2 text-sm font-bold text-gray-700">Weight</label>
+            <input type="text" id="weight" name="weight" [(ngModel)]="productData.weight"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+        </div>
+
+        <div class="grid items-end grid-cols-3 col-span-3 space-x-2">
+          <p class="col-span-3 text-lg font-medium">Product Cost Details</p>
+          <div>
+            <label for="currency" class="block mb-2 text-sm font-bold text-gray-700">Currency</label>
+            <input type="text" id="currency" name="currency" [(ngModel)]="productData.currency"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+          <div>
+            <label for="price" class="block mb-2 text-sm font-bold text-gray-700">Price</label>
+            <input type="text" id="price" name="price" [(ngModel)]="productData.price"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+          <div>
+            <label for="peelingPrice" class="block mb-2 text-sm font-bold text-gray-700">Peeling Price</label>
+            <input type="text" id="peelingPrice" name="peelingPrice" [(ngModel)]="productData.peelingPrice"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+          <div>
+            <label for="packagingPrice" class="block mb-2 text-sm font-bold text-gray-700">Packaging Price</label>
+            <input type="text" id="packagingPrice" name="packagingPrice" [(ngModel)]="productData.packagingPrice"
+              class="w-full p-2 border border-gray-300 rounded">
+          </div>
+          <div class="block">
+            <div>
+              <label class="inline-flex items-center">
+                <input type="checkbox" class="w-4 h-4 rounded" id="providingPeeling" name="providingPeeling"
+                  [(ngModel)]="productData.providingPeeling" />
+                <span class="ml-2">Providing Peeling</span>
+              </label>
+            </div>
+          </div>
+          <div class="block">
+            <div>
+              <label class="inline-flex items-center">
+                <input type="checkbox" class="w-4 h-4 rounded" id="providingPackaging" name="providingPackaging"
+                  [(ngModel)]="productData.providingPackaging" />
+                <span class="ml-2">Providing Packaging</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-span-3">
+            <label for="description" class="block mb-2 text-sm font-bold text-gray-700">Description</label>
+            <textarea type="text" id="description" name="description" [(ngModel)]="productData.description"
+              class="w-full p-2 border border-gray-300 rounded"></textarea>
+          </div>
+          <div class="block col-span-3">
+            <div>
+              <label class="inline-flex items-center">
+                <input type="checkbox" class="w-4 h-4 rounded" id="isActive" name="isActive"
+                  [(ngModel)]="productData.isActive" />
+                <span class="ml-2">Active</span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="mb-4">
-        <label for="code" class="block mb-2 text-sm font-bold text-gray-700">Product Code</label>
-        <input type="text" id="code" name="code" [(ngModel)]="editedProduct.code"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="seqno" class="block mb-2 text-sm font-bold text-gray-700">Product Seq. No.</label>
-        <input type="text" id="seqno" name="seqno" [(ngModel)]="editedProduct.seqno"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="description" class="block mb-2 text-sm font-bold text-gray-700">Product Description</label>
-        <input type="text" id="description" name="description" [(ngModel)]="editedProduct.description"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="isActive" class="block mb-2 text-sm font-bold text-gray-700">Product isActive</label>
-        <input type="text" id="isActive" name="isActive" [(ngModel)]="editedProduct.isActive"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="status" class="block mb-2 text-sm font-bold text-gray-700">Product Status</label>
-        <input type="text" id="status" name="status" [(ngModel)]="editedProduct.status"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="createdOn" class="block mb-2 text-sm font-bold text-gray-700">Product Created On</label>
-        <input type="text" id="createdOn" name="createdOn" [(ngModel)]="editedProduct.createdOn"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="productType" class="block mb-2 text-sm font-bold text-gray-700">Product productType</label>
-        <input type="text" id="productType" name="productType" [(ngModel)]="editedProduct.productType"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="categoryName" class="block mb-2 text-sm font-bold text-gray-700">Product categoryName</label>
-        <input type="text" id="categoryName" name="categoryName" [(ngModel)]="editedProduct.categoryName"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="price" class="block mb-2 text-sm font-bold text-gray-700">Product price</label>
-        <input type="text" id="price" name="price" [(ngModel)]="editedProduct.price"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="currency" class="block mb-2 text-sm font-bold text-gray-700">Product currency</label>
-        <input type="text" id="currency" name="currency" [(ngModel)]="editedProduct.currency"
-          class="w-full p-2 border border-gray-300 rounded">
-      </div>
-      <div class="mb-4">
-        <label for="weight" class="block mb-2 text-sm font-bold text-gray-700">Product weight</label>
-        <input type="text" id="weight" name="weight" [(ngModel)]="editedProduct.weight"
-          class="w-full p-2 border border-gray-300 rounded">
+      <div class="flex justify-between">
+        <button (click)="modalService.closeModal()" class="px-4 py-2 text-white bg-gray-500 rounded">
+          Close
+        </button>
+        <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded">Save</button>
       </div>
     </form>
 
-    <div class="flex justify-between">
-      <button (click)="modalService.closeModal()" class="px-4 py-2 text-white bg-gray-500 rounded">
-        Close
-      </button>
-      <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded">Save</button>
-    </div>
   </div>
 </div>
