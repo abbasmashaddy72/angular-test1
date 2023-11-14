@@ -10,10 +10,10 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { FooterComponent } from './components/footer/footer.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
+import { ModalProductComponent } from './edit/modal-product/modal-product.component'
 import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { HomeComponent } from './pages/home/home.component'
 import { ProductsComponent } from './pages/products/products.component'
-import { SignUpComponent } from './pages/sign-up/sign-up.component'
 import { SignInComponent } from './pages/signIn/signIn.component'
 
 @NgModule({
@@ -23,9 +23,9 @@ import { SignInComponent } from './pages/signIn/signIn.component'
     SignInComponent,
     NavbarComponent,
     FooterComponent,
-    SignUpComponent,
     DashboardComponent,
-    ProductsComponent
+    ProductsComponent,
+    ModalProductComponent
   ],
   imports: [
     BrowserModule,

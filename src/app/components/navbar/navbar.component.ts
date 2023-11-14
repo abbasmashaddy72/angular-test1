@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { AuthenticationService } from 'src/app/services/authentication.service'
 
 @Component({
@@ -6,16 +6,21 @@ import { AuthenticationService } from 'src/app/services/authentication.service'
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
-  constructor (private authenticationService: AuthenticationService) {}
-
+export class NavbarComponent implements OnInit {
+  isLoggedIn = false
   isMenuOpen = false
+
+  constructor (private authenticationService: AuthenticationService) {}
 
   toggleMenu () {
     this.isMenuOpen = !this.isMenuOpen
   }
 
-  isLoggedIn = this.authenticationService.isLoggedIn()
+  ngOnInit () {
+    this.authenticationService.isAuthenticated$().subscribe(status => {
+      this.isLoggedIn = status
+    })
+  }
 
   logout (): void {
     this.authenticationService.logout()

@@ -22,10 +22,8 @@
       <a class="ml-4 text-sm text-gray-400 hover:text-gray-500" [routerLink]="['admin/products']">Products</a>
     </li>
   </ul>
-  <a class="hidden px-6 py-2 text-sm font-bold text-gray-900 transition duration-200 lg:inline-block lg:ml-auto lg:mr-3 bg-gray-50 hover:bg-gray-100 rounded-xl"
+  <a class="hidden px-6 py-2 text-sm font-bold text-white text-gray-900 transition duration-200 bg-blue-500 lg:inline-block lg:ml-auto lg:mr-3 hover:bg-blue-600 rounded-xl"
     [routerLink]="['sign-in']" *ngIf="!isLoggedIn">Sign In</a>
-  <a class="hidden px-6 py-2 text-sm font-bold text-white transition duration-200 bg-blue-500 lg:inline-block hover:bg-blue-600 rounded-xl"
-    [routerLink]="['sign-up']" *ngIf="!isLoggedIn">Sign up</a>
   <button class="px-4 py-2 font-bold text-white bg-orange-500 rounded hover:bg-orange-700" (click)="logout()"
     *ngIf="isLoggedIn">
     Sign Out
@@ -62,10 +60,8 @@
     </div>
     <div class="mt-auto">
       <div class="pt-6">
-        <a class="block px-4 py-3 mb-3 text-xs font-semibold leading-none leading-loose text-center bg-gray-50 hover:bg-gray-100 rounded-xl"
+        <a class="block px-4 py-3 mb-3 text-xs font-semibold leading-none leading-loose text-center text-white bg-blue-500 hover:bg-blue-600 rounded-xl"
           [routerLink]="['sign-in']">Sign in</a>
-        <a class="block px-4 py-3 mb-2 text-xs font-semibold leading-loose text-center text-white bg-blue-600 hover:bg-blue-700 rounded-xl"
-          [routerLink]="['sign-up']">Sign Up</a>
       </div>
       <p class="my-4 text-xs text-center text-gray-400">
         <span>Copyright © 2021</span>

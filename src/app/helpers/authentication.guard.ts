@@ -22,7 +22,6 @@ export class AuthenticationGuard {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/sign-in'])
     }
-
     return true
   }
 }

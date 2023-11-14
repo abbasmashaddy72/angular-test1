@@ -29,7 +29,7 @@ export class SignInComponent implements OnInit {
   }
 
   onClickSubmit (loginForm: any) {
-    if (this.login.username == '' || this.login.password == '') {
+    if (this.login.username === '' || this.login.password === '') {
       this.notifier.notify('error', 'User Name & Password Should not be empty!')
       return
     }
@@ -37,12 +37,13 @@ export class SignInComponent implements OnInit {
     this.authenticationService
       .login(this.login.username, this.login.password)
       .subscribe(
-        token => {
-          localStorage.setItem(this.tokenKey, JSON.parse(token).token)
-          this.router.navigate(['admin/dashboard'])
+        (token: any) => {
+          if (token && token.objresult && token.objresult.accessKey) {
+            localStorage.setItem(this.tokenKey, token.objresult.accessKey)
+            this.router.navigate(['admin/dashboard'])
+          }
         },
         error => {
-          // Handle the error here
           console.error('Login error:', error)
           // You can also display an additional error notification if needed
           this.notifier.notify(

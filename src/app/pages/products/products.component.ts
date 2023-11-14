@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
-import { Constants } from './../../config/constants'
+import { ModalService } from 'src/app/modal-service.service'
+import { AuthenticationService } from 'src/app/services/authentication.service'
+import { ProductService } from '../../api/product.api'
 
 @Component({
   selector: 'app-products',
@@ -8,53 +9,42 @@ import { Constants } from './../../config/constants'
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  dtOptions: DataTables.Settings = {
-    columns: [
-      {
-        title: 'ID',
-        data: 'name'
-      },
-      {
-        title: 'First name',
-        data: 'code'
-      },
-      {
-        title: 'Last name',
-        data: 'createdOn'
-      }
-    ]
-  }
-  obj: any = []
+  products: any[] = []
+  editedProduct: any
 
-  constructor (private http: HttpClient) {}
+  constructor (
+    private authenticationService: AuthenticationService,
+    private productService: ProductService,
+    public modalService: ModalService
+  ) {}
 
-  getProducts (cls: object) {
-    const header = new HttpHeaders()
-      .set('content-type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*')
-    // .set('Authorization', '428c3dfe-2f99-421c-9676-753e24bb38d1')
-
-    return this.http.post(
-      Constants.SAYDAK_API_ENDPOINT + 'v1/Admin/_getProductList',
-      cls,
-      { headers: header }
-    )
+  ngOnInit (): void {
+    this.productsList()
   }
 
   productsList () {
-    var request = { seqno: 0, UserId: '3', ClientId: 1 }
-    this.getProducts(request).subscribe((result: any) => {
-      if (result['status'] == '200') {
-        this.obj = result['objresult']
-
-        console.log(this.obj)
-        this.dtOptions.ajax = this.obj
-      } else {
-        alert('failure')
+    var request = {
+      seqno: 0,
+      UserId: this.authenticationService.getToken().usersUserid,
+      ClientId: this.authenticationService.getToken().usersClientId
+    }
+    this.productService.getProducts(request).subscribe(
+      (response: any) => {
+        if (response['status'] == '200') {
+          this.products = response['objresult']
+        } else {
+          alert('failure')
+          console.log('Error Fetching the API Data')
+        }
+      },
+      error => {
+        console.error('API Error:', error)
       }
-    })
+    )
   }
-  ngOnInit (): void {
-    this.productsList()
+
+  openEditModal (product: any) {
+    this.editedProduct = { ...product }
+    this.modalService.openModal()
   }
 }

@@ -1,17 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Constants } from '../config/constants';
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Constants } from '../config/constants'
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ProductService {
-  constructor(private httpClient: HttpClient) {}
+  constructor (private httpClient: HttpClient) {}
 
-  getProducts(limit: number, skip: number) {
-    const apiURL =
-      Constants.API_ENDPOINT + `products/?limit=${limit}&skip=${skip}`;
+  getProducts (cls: object) {
+    const header = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
 
-    return this.httpClient.get(apiURL);
+    return this.httpClient.post(
+      Constants.SAYDAK_API_ENDPOINT +
+        Constants.API_VERSION +
+        '/Admin/_getProductList',
+      cls,
+      { headers: header }
+    )
   }
 }

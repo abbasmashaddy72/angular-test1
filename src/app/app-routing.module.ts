@@ -4,7 +4,6 @@ import { AuthenticationGuard } from './helpers/authentication.guard'
 import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { HomeComponent } from './pages/home/home.component'
 import { ProductsComponent } from './pages/products/products.component'
-import { SignUpComponent } from './pages/sign-up/sign-up.component'
 import { SignInComponent } from './pages/signIn/signIn.component'
 
 const routes: Routes = [
@@ -17,11 +16,6 @@ const routes: Routes = [
     path: 'sign-in',
     component: SignInComponent,
     data: { title: 'Sign In' }
-  },
-  {
-    path: 'sign-up',
-    component: SignUpComponent,
-    data: { title: 'Sign Up' }
   },
   {
     path: 'admin/dashboard',

@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (this.authenticationService.isLoggedIn()) {
       let newRequest = request.clone({
         setHeaders: {
-          Authorization: `${this.authenticationService.getToken()}`
+          Authorization: `${this.authenticationService.getToken().accessKey}`
         }
       })
       return next.handle(newRequest)

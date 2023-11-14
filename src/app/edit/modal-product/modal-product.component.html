@@ -1,0 +1,78 @@
+<div *ngIf="editedProduct" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-200 bg-opacity-80">
+  <div class="modal-overlay"></div>
+  <div class="w-2/4 p-4 bg-white rounded shadow-lg modal-content">
+    <h2 class="mb-4 text-2xl font-semibold">Edit Product</h2>
+    <div class="flex justify-center mb-4">
+      <img src="{{editedProduct.imagePath}}" class="h-20 rounded-md" />
+    </div>
+    <form (ngSubmit)="saveProduct()" #editForm="ngForm" class="grid grid-cols-4 gap-2">
+      <div class="mb-4">
+        <label for="name" class="block mb-2 text-sm font-bold text-gray-700">Product Name</label>
+        <input type="text" id="name" name="name" [(ngModel)]="editedProduct.name"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="code" class="block mb-2 text-sm font-bold text-gray-700">Product Code</label>
+        <input type="text" id="code" name="code" [(ngModel)]="editedProduct.code"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="seqno" class="block mb-2 text-sm font-bold text-gray-700">Product Seq. No.</label>
+        <input type="text" id="seqno" name="seqno" [(ngModel)]="editedProduct.seqno"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="description" class="block mb-2 text-sm font-bold text-gray-700">Product Description</label>
+        <input type="text" id="description" name="description" [(ngModel)]="editedProduct.description"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="isActive" class="block mb-2 text-sm font-bold text-gray-700">Product isActive</label>
+        <input type="text" id="isActive" name="isActive" [(ngModel)]="editedProduct.isActive"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="status" class="block mb-2 text-sm font-bold text-gray-700">Product Status</label>
+        <input type="text" id="status" name="status" [(ngModel)]="editedProduct.status"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="createdOn" class="block mb-2 text-sm font-bold text-gray-700">Product Created On</label>
+        <input type="text" id="createdOn" name="createdOn" [(ngModel)]="editedProduct.createdOn"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="productType" class="block mb-2 text-sm font-bold text-gray-700">Product productType</label>
+        <input type="text" id="productType" name="productType" [(ngModel)]="editedProduct.productType"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="categoryName" class="block mb-2 text-sm font-bold text-gray-700">Product categoryName</label>
+        <input type="text" id="categoryName" name="categoryName" [(ngModel)]="editedProduct.categoryName"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="price" class="block mb-2 text-sm font-bold text-gray-700">Product price</label>
+        <input type="text" id="price" name="price" [(ngModel)]="editedProduct.price"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="currency" class="block mb-2 text-sm font-bold text-gray-700">Product currency</label>
+        <input type="text" id="currency" name="currency" [(ngModel)]="editedProduct.currency"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div class="mb-4">
+        <label for="weight" class="block mb-2 text-sm font-bold text-gray-700">Product weight</label>
+        <input type="text" id="weight" name="weight" [(ngModel)]="editedProduct.weight"
+          class="w-full p-2 border border-gray-300 rounded">
+      </div>
+    </form>
+
+    <div class="flex justify-between">
+      <button (click)="modalService.closeModal()" class="px-4 py-2 text-white bg-gray-500 rounded">
+        Close
+      </button>
+      <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded">Save</button>
+    </div>
+  </div>
+</div>
