@@ -1,4 +1,4 @@
-<nav class="relative flex items-center justify-between px-4 py-4 bg-white">
+<nav class="relative flex items-center justify-between px-4 py-4 bg-white border-b-2 border-blue-200">
   <a class="text-3xl font-bold leading-none" [routerLink]="['']">
     <svg class="h-10" alt="logo" viewBox="0 0 10240 10240">
       <path xmlns="http://www.w3.org/2000/svg"
@@ -18,8 +18,9 @@
     class="absolute hidden transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6"
     [class.hidden]="!isMenuOpen">
     <li>
-      <a class="text-sm text-gray-400 hover:text-gray-500" [routerLink]="['']">Home</a>
-      <a class="ml-4 text-sm text-gray-400 hover:text-gray-500" [routerLink]="['admin/products']">Products</a>
+      <a class="font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['']">Home</a>
+      <a class="ml-4 font-semibold text-gray-700 text-md hover:text-gray-900"
+        [routerLink]="['admin/products']">Products</a>
     </li>
   </ul>
   <a class="hidden px-6 py-2 text-sm font-bold text-white text-gray-900 transition duration-200 bg-blue-500 lg:inline-block lg:ml-auto lg:mr-3 hover:bg-blue-600 rounded-xl"
@@ -51,9 +52,9 @@
     <div>
       <ul>
         <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 rounded hover:bg-blue-50 hover:text-blue-600"
+          <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
             [routerLink]="['']">Home</a>
-          <a class="block p-4 text-sm font-semibold text-gray-400 rounded hover:bg-blue-50 hover:text-blue-600"
+          <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
             [routerLink]="['admin/products']">Products</a>
         </li>
       </ul>
