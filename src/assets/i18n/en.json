@@ -1,0 +1,49 @@
+{
+  "Sign In": "Sign In",
+  "Home": "Home",
+  "Dashboard": "Dashboard",
+  "Products": "Products",
+  "privacy-policy": "Privacy Policy",
+  "terms-service": "Terms of Service",
+  "sign": {
+    "title": "Sign In To Your Account",
+    "username": "Username:",
+    "password": "Password:",
+    "button": "Sign In"
+  },
+  "nav": {
+    "mobile-menu": "Mobile menu",
+    "menu-home": "Home",
+    "menu-products": "Products",
+    "button-sign-in": "Sign In",
+    "button-sign-out": "Sign Out"
+  },
+  "common": {
+    "copyright": "Copyright"
+  },
+  "products": {
+    "table-name": "Name",
+    "table-product-type": "Product Type",
+    "table-price": "Price",
+    "table-status": "Status",
+    "table-created-on": "Created On",
+    "table-action": "Action"
+  },
+  "product-edit": {
+    "title": "Edit Product",
+    "sub-title-1": "Product Details",
+    "sub-title-2": "Product Cost Details",
+    "form-type-name": "Type Name",
+    "form-weight": "Name",
+    "form-currency": "Currency",
+    "form-price": "Price",
+    "form-peeling-price": "Peeling Price",
+    "form-packaging-price": "Packaging Price",
+    "form-providing-peeling": "Providing Peeling",
+    "form-providing-packaging": "Providing Packaging",
+    "form-description": "Description",
+    "form-active": "Active",
+    "button-close": "Close",
+    "button-submit": "Submit"
+  }
+}

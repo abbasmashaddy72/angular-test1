@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { ModalService } from 'src/app/modal-service.service'
 import { AuthenticationService } from 'src/app/services/authentication.service'
+import { ModalService } from 'src/app/services/modal.service'
 import { ProductService } from '../../api/product.api'
 
 @Component({

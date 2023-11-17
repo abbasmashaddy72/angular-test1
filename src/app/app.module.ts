@@ -1,4 +1,8 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule
+} from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
@@ -6,6 +10,8 @@ import { DataTablesModule } from 'angular-datatables'
 import { NotifierModule } from 'angular-notifier'
 import { TokenInterceptor } from './helpers/token.interceptor'
 
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
+import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { FooterComponent } from './components/footer/footer.component'
@@ -15,6 +21,13 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { HomeComponent } from './pages/home/home.component'
 import { ProductsComponent } from './pages/products/products.component'
 import { SignInComponent } from './pages/signIn/signIn.component'
+import { TranslationService } from './services/translation.service'
+import { SharedModule } from './shared/shared.module'
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory (http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http)
+}
 
 @NgModule({
   declarations: [
@@ -33,11 +46,24 @@ import { SignInComponent } from './pages/signIn/signIn.component'
     AppRoutingModule,
     FormsModule,
     DataTablesModule,
-    NotifierModule
+    NotifierModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    SharedModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    TranslationService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor (translationService: TranslationService) {
+    translationService.init()
+  }
+}

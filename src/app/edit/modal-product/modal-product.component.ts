@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { ProductService } from 'src/app/api/product.api'
-import { ModalService } from 'src/app/modal-service.service'
 import { AuthenticationService } from 'src/app/services/authentication.service'
+import { ModalService } from 'src/app/services/modal.service'
 
 @Component({
   selector: 'app-modal-product',

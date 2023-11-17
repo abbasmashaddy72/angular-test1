@@ -1,0 +1,49 @@
+{
+  "Sign In": "تسجيل الدخول",
+  "Home": "الرئيسية",
+  "Dashboard": "لوحة التحكم",
+  "Products": "المنتجات",
+  "privacy-policy": "سياسة الخصوصية",
+  "terms-service": "شروط الخدمة",
+  "sign": {
+    "title": "تسجيل الدخول إلى حسابك",
+    "username": "اسم المستخدم:",
+    "password": "كلمة المرور:",
+    "button": "تسجيل الدخول"
+  },
+  "nav": {
+    "mobile-menu": "قائمة الهاتف المحمول",
+    "menu-home": "الرئيسية",
+    "menu-products": "المنتجات",
+    "button-sign-in": "تسجيل الدخول",
+    "button-sign-out": "تسجيل الخروج"
+  },
+  "common": {
+    "copyright": "حقوق النشر"
+  },
+  "products": {
+    "table-name": "الاسم",
+    "table-product-type": "نوع المنتج",
+    "table-price": "السعر",
+    "table-status": "الحالة",
+    "table-created-on": "تم الإنشاء في",
+    "table-action": "الإجراء"
+  },
+  "product-edit": {
+    "title": "تحرير المنتج",
+    "sub-title-1": "تفاصيل المنتج",
+    "sub-title-2": "تفاصيل تكلفة المنتج",
+    "form-type-name": "اسم النوع",
+    "form-weight": "الوزن",
+    "form-currency": "العملة",
+    "form-price": "السعر",
+    "form-peeling-price": "سعر التقشير",
+    "form-packaging-price": "سعر التعبئة",
+    "form-providing-peeling": "توفير التقشير",
+    "form-providing-packaging": "توفير التعبئة",
+    "form-description": "الوصف",
+    "form-active": "نشط",
+    "button-close": "إغلاق",
+    "button-submit": "إرسال"
+  }
+}

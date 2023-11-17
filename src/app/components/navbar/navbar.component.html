@@ -9,7 +9,7 @@
   <div class="lg:hidden">
     <button class="flex items-center p-3 text-blue-600 navbar-burger" (click)="toggleMenu()">
       <svg class="block w-4 h-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <title>Mobile menu</title>
+        <title>{{ 'nav.mobile-menu' }}</title>
         <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
       </svg>
     </button>
@@ -18,16 +18,19 @@
     class="absolute hidden transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6"
     [class.hidden]="!isMenuOpen">
     <li>
-      <a class="font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['']">Home</a>
-      <a class="ml-4 font-semibold text-gray-700 text-md hover:text-gray-900"
-        [routerLink]="['admin/products']">Products</a>
+      <a class="font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['']">{{ 'nav.menu-home' |
+        translate }}</a>
+      <a class="ml-4 font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['admin/products']">{{
+        'nav.menu-products' | translate}}</a>
     </li>
+    <button (click)="changeLanguage('ar')">Arabic</button>
+    <button (click)="changeLanguage('en')">English</button>
   </ul>
   <a class="hidden px-6 py-2 text-sm font-bold text-white text-gray-900 transition duration-200 bg-blue-500 lg:inline-block lg:ml-auto lg:mr-3 hover:bg-blue-600 rounded-xl"
-    [routerLink]="['sign-in']" *ngIf="!isLoggedIn">Sign In</a>
+    [routerLink]="['sign-in']" *ngIf="!isLoggedIn">{{ 'nav.button-sign-in' | translate }}</a>
   <button class="px-4 py-2 font-bold text-white bg-orange-500 rounded hover:bg-orange-700" (click)="logout()"
     *ngIf="isLoggedIn">
-    Sign Out
+    {{ 'nav.button-sign-out' | translate }}
   </button>
 </nav>
 
@@ -53,19 +56,21 @@
       <ul>
         <li class="mb-1">
           <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
-            [routerLink]="['']">Home</a>
+            [routerLink]="['']">{{ 'nav.menu-home' |
+            translate }}</a>
           <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
-            [routerLink]="['admin/products']">Products</a>
+            [routerLink]="['admin/products']">{{ 'nav.menu-products' |
+            translate }}</a>
         </li>
       </ul>
     </div>
     <div class="mt-auto">
       <div class="pt-6">
         <a class="block px-4 py-3 mb-3 text-xs font-semibold leading-none leading-loose text-center text-white bg-blue-500 hover:bg-blue-600 rounded-xl"
-          [routerLink]="['sign-in']">Sign in</a>
+          [routerLink]="['sign-in']">{{ 'nav.button-sign-in' | translate }}</a>
       </div>
       <p class="my-4 text-xs text-center text-gray-400">
-        <span>Copyright © 2021</span>
+        <span>{{ 'common.copyright' }} © {{ year }}</span>
       </p>
     </div>
   </nav>

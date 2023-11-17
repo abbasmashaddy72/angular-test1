@@ -2,18 +2,16 @@
   <table class="w-full text-sm text-left text-gray-500 bg-white border-collapse">
     <thead class="bg-gray-50">
       <tr>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Sl. No.</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Product Type</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Status</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Created On</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-name' | translate }}</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-product-type' | translate }}</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-price' | translate }}</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-status' | translate }}</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-created-on' | translate }}</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
       </tr>
     </thead>
     <tbody class="border-t border-gray-100 divide-y divide-gray-100">
-      <tr class="hover:bg-gray-50" *ngFor="let list of products;let i=index;">
-        <td class="px-6 py-4">{{ i+1 }}</td>
+      <tr class="hover:bg-gray-50" *ngFor="let list of products;">
         <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
           <div class="relative w-10 h-10">
             <img class="object-cover object-center w-full h-full rounded-full" src="{{ list.imagePath }}" alt="" />
