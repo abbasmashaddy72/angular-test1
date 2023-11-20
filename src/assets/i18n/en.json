@@ -3,6 +3,7 @@
   "Home": "Home",
   "Dashboard": "Dashboard",
   "Products": "Products",
+  "Storage": "Storage",
   "privacy-policy": "Privacy Policy",
   "terms-service": "Terms of Service",
   "sign": {
@@ -15,6 +16,7 @@
     "mobile-menu": "Mobile menu",
     "menu-home": "Home",
     "menu-products": "Products",
+    "menu-storage": "Storage",
     "button-sign-in": "Sign In",
     "button-sign-out": "Sign Out"
   },

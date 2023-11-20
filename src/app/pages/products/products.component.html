@@ -7,7 +7,7 @@
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-price' | translate }}</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-status' | translate }}</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-created-on' | translate }}</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">{{ 'products.table-action' | translate }}</th>
       </tr>
     </thead>
     <tbody class="border-t border-gray-100 divide-y divide-gray-100">
@@ -30,6 +30,7 @@
             {{ list.status }}
           </span>
         </td>
+        <td class="px-6 py-4">{{ list.createdOn }}</td>
         <td class="px-6 py-4">
           <div class="flex justify-end gap-4">
             <a (click)="openEditModal(list)" class="cursor-pointer">

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
+import { NotifierService } from 'angular-notifier'
 import { ProductService } from 'src/app/api/product.api'
 import { AuthenticationService } from 'src/app/services/authentication.service'
 import { ModalService } from 'src/app/services/modal.service'
@@ -11,12 +12,16 @@ import { ModalService } from 'src/app/services/modal.service'
 export class ModalProductComponent implements OnInit {
   @Input() editedProduct: any
   productData: any
+  private readonly notifier: NotifierService
 
   constructor (
     private authenticationService: AuthenticationService,
     private productService: ProductService,
-    public modalService: ModalService
-  ) {}
+    public modalService: ModalService,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService
+  }
 
   ngOnInit (): void {
     this.productById()
@@ -31,14 +36,21 @@ export class ModalProductComponent implements OnInit {
     this.productService.getProductById(request).subscribe(
       (response: any) => {
         if (response['status'] == '200') {
-          this.productData = response['objresult']
+          if (response['objresult'] == null) {
+            this.notifier.notify('error', 'No Data to Edit')
+            this.modalService.closeModal()
+          } else {
+            this.productData = response['objresult']
+          }
         } else {
           alert('failure')
           console.log('Error Fetching the API Data')
+          this.modalService.closeModal()
         }
       },
       error => {
         console.error('API Error:', error)
+        this.modalService.closeModal()
       }
     )
   }

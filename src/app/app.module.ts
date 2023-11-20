@@ -21,6 +21,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { HomeComponent } from './pages/home/home.component'
 import { ProductsComponent } from './pages/products/products.component'
 import { SignInComponent } from './pages/signIn/signIn.component'
+import { StorageComponent } from './pages/storage/storage.component'
 import { TranslationService } from './services/translation.service'
 import { SharedModule } from './shared/shared.module'
 
@@ -38,7 +39,8 @@ export function HttpLoaderFactory (http: HttpClient): TranslateHttpLoader {
     FooterComponent,
     DashboardComponent,
     ProductsComponent,
-    ModalProductComponent
+    ModalProductComponent,
+    StorageComponent
   ],
   imports: [
     BrowserModule,

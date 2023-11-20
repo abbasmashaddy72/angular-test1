@@ -3,6 +3,7 @@
   "Home": "الرئيسية",
   "Dashboard": "لوحة التحكم",
   "Products": "المنتجات",
+  "Storage": "تخزين",
   "privacy-policy": "سياسة الخصوصية",
   "terms-service": "شروط الخدمة",
   "sign": {
@@ -15,6 +16,7 @@
     "mobile-menu": "قائمة الهاتف المحمول",
     "menu-home": "الرئيسية",
     "menu-products": "المنتجات",
+    "menu-storage": "تخزين",
     "button-sign-in": "تسجيل الدخول",
     "button-sign-out": "تسجيل الخروج"
   },

@@ -5,6 +5,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { HomeComponent } from './pages/home/home.component'
 import { ProductsComponent } from './pages/products/products.component'
 import { SignInComponent } from './pages/signIn/signIn.component'
+import { StorageComponent } from './pages/storage/storage.component'
 
 const routes: Routes = [
   {
@@ -27,6 +28,12 @@ const routes: Routes = [
     path: 'admin/products',
     component: ProductsComponent,
     data: { title: 'Products' },
+    canActivate: [AuthenticationGuard]
+  },
+  {
+    path: 'admin/storage',
+    component: StorageComponent,
+    data: { title: 'Storage' },
     canActivate: [AuthenticationGuard]
   }
 ]

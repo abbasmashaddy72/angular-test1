@@ -20,8 +20,14 @@
     <li>
       <a class="font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['']">{{ 'nav.menu-home' |
         translate }}</a>
-      <a class="ml-4 font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['admin/products']">{{
+    </li>
+    <li>
+      <a class="font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['admin/products']">{{
         'nav.menu-products' | translate}}</a>
+    </li>
+    <li>
+      <a class="font-semibold text-gray-700 text-md hover:text-gray-900" [routerLink]="['admin/storage']">{{
+        'nav.menu-storage' | translate}}</a>
     </li>
     <button (click)="changeLanguage('ar')">Arabic</button>
     <button (click)="changeLanguage('en')">English</button>
@@ -58,8 +64,15 @@
           <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
             [routerLink]="['']">{{ 'nav.menu-home' |
             translate }}</a>
+        </li>
+        <li class="mb-1">
           <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
             [routerLink]="['admin/products']">{{ 'nav.menu-products' |
+            translate }}</a>
+        </li>
+        <li class="mb-1">
+          <a class="block p-4 font-semibold text-gray-700 rounded text-md hover:bg-blue-50 hover:text-blue-600"
+            [routerLink]="['admin/storage']">{{ 'nav.menu-storage' |
             translate }}</a>
         </li>
       </ul>
