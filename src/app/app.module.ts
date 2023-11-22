@@ -14,6 +14,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { FolderListComponent } from './components/folder-list/folder-list.component'
 import { FooterComponent } from './components/footer/footer.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
 import { ModalProductComponent } from './edit/modal-product/modal-product.component'
@@ -25,7 +26,6 @@ import { StorageComponent } from './pages/storage/storage.component'
 import { TranslationService } from './services/translation.service'
 import { SharedModule } from './shared/shared.module'
 
-// AoT requires an exported function for factories
 export function HttpLoaderFactory (http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http)
 }
@@ -40,7 +40,8 @@ export function HttpLoaderFactory (http: HttpClient): TranslateHttpLoader {
     DashboardComponent,
     ProductsComponent,
     ModalProductComponent,
-    StorageComponent
+    StorageComponent,
+    FolderListComponent
   ],
   imports: [
     BrowserModule,

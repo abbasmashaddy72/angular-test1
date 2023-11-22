@@ -45,7 +45,6 @@ export class SignInComponent implements OnInit {
         },
         error => {
           console.error('Login error:', error)
-          // You can also display an additional error notification if needed
           this.notifier.notify(
             'error',
             'Login failed. Please check your credentials.'

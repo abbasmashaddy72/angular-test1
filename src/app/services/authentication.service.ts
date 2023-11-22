@@ -53,7 +53,7 @@ export class AuthenticationService {
 
   public logout () {
     localStorage.removeItem(this.tokenKey)
-    this.isAuthenticatedSubject.next(false) // Notify subscribers about the logout
+    this.isAuthenticatedSubject.next(false)
     this.router.navigate(['sign-in'])
   }
 
