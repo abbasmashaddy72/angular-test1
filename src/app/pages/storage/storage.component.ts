@@ -69,41 +69,52 @@ export class StorageComponent implements OnInit {
     const selectedFolder = this.getSelectedFolder()
 
     if (selectedFolder) {
-      const file = uploadInput.files && uploadInput.files[0]
+      const files = uploadInput.files
 
-      if (file && file.size <= this.fileUploadLimit) {
-        console.log('File selected:', file)
-        const reader = new FileReader()
+      if (files && files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i]
 
-        reader.onloadend = () => {
-          try {
-            const base64String =
-              reader.result &&
-              reader.result.toString().replace('data:', '').replace(/^.+,/, '')
-            console.log(reader.result)
-            console.log(base64String)
+          if (file.size <= this.fileUploadLimit) {
+            console.log('File selected:', file)
+            const reader = new FileReader()
 
-            if (base64String) {
-              const imageObj: ImageObject = {
-                name: `image-${selectedFolder.images.length + 1}`,
-                timestamp: new Date(),
-                file_base64: base64String
+            reader.onloadend = () => {
+              try {
+                const base64String =
+                  reader.result &&
+                  reader.result
+                    .toString()
+                    .replace('data:', '')
+                    .replace(/^.+,/, '')
+                console.log(reader.result)
+                console.log(base64String)
+
+                if (base64String) {
+                  const imageObj: ImageObject = {
+                    name: `image-${selectedFolder.images.length + 1}`,
+                    timestamp: new Date(),
+                    file_base64: base64String
+                  }
+
+                  console.log('Adding imageObj:', imageObj)
+
+                  this.addImage(imageObj, selectedFolder)
+                }
+              } catch (error) {
+                console.error('Error in uploadChangeAction:', error)
               }
-
-              console.log('Adding imageObj:', imageObj)
-
-              this.addImage(imageObj, selectedFolder)
-
-              this.cdRef.detectChanges()
             }
-          } catch (error) {
-            console.error('Error in uploadChangeAction:', error)
+
+            reader.readAsDataURL(file)
+          } else {
+            alert('File too large')
           }
         }
 
-        reader.readAsDataURL(file)
+        this.cdRef.detectChanges()
       } else {
-        alert('File too large')
+        console.error('No files selected')
       }
 
       uploadInput.value = ''
