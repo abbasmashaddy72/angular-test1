@@ -1,0 +1,9 @@
+<div class="flex flex-col bg-black">
+  <div *ngFor="let menuItem of contextMenuItems; index as i" class="rounded-lg">
+    <div class="p-2 text-white bg-black cursor-pointer context-menu-item"
+      (click)="onContextMenuClick($event, menuItem.menuEvent)">
+      {{ menuItem.menuText }}
+    </div>
+    <hr *ngIf="i < contextMenuItems.length - 1" class="w-full my-1 border-t border-gray-200" />
+  </div>
+</div>

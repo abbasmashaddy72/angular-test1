@@ -14,6 +14,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { ContextMenuComponent } from './components/context-menu/context-menu.component'
 import { FolderListComponent } from './components/folder-list/folder-list.component'
 import { FooterComponent } from './components/footer/footer.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
@@ -41,7 +42,8 @@ export function HttpLoaderFactory (http: HttpClient): TranslateHttpLoader {
     ProductsComponent,
     ModalProductComponent,
     StorageComponent,
-    FolderListComponent
+    FolderListComponent,
+    ContextMenuComponent
   ],
   imports: [
     BrowserModule,

@@ -40,8 +40,14 @@
           </div>
         </div>
 
-        <div *ngIf="selectedFolder && selectedFolder.images.length !== 0" class="grid grid-cols-3 gap-4">
-          <div *ngFor="let image of selectedFolder.images" class="relative group">
+        <h1 class="my-2 text-lg font-semibold text-gray-600">Images</h1>
+        <div *ngIf="selectedFolder && selectedFolder.images.length !== 0" class="grid grid-cols-4 gap-2">
+          <div *ngFor="let image of selectedFolder.images" class="relative group"
+            (contextmenu)="showContextMenu($event, image);false">
+            <app-context-menu *ngIf="rightClickMenuItems.length > 0 && isDisplayContextMenu"
+              [ngStyle]="getRightClickMenuStyle()" [contextMenuItems]="rightClickMenuItems"
+              (onContextMenuItemClick)="handleMenuItemClick($event)"></app-context-menu>
+
             <img [src]="getSafeImageSource(image.file_base64)"
               class="object-cover w-full transition duration-300 border-2 border-blue-300 rounded-md shadow-xl h-36 group-hover:opacity-75" />
             <div
@@ -55,6 +61,36 @@
 
         <ul *ngIf="selectedFolder && selectedFolder.images.length === 0">
           <li>No images in this {{ selectedFolder.name }}.</li>
+        </ul>
+
+        <!-- Display other files -->
+        <h1 class="my-2 text-lg font-semibold text-gray-600">Other Files</h1>
+        <div *ngIf="selectedFolder && selectedFolder.files.length !== 0" class="grid grid-cols-4 gap-2">
+          <div *ngFor="let file of selectedFolder.files" class="relative group"
+            (contextmenu)="showContextMenu($event, file);false">
+            <app-context-menu *ngIf="rightClickMenuItems.length > 0 && isDisplayContextMenu"
+              [ngStyle]="getRightClickMenuStyle()" [contextMenuItems]="rightClickMenuItems"
+              (onContextMenuItemClick)="handleMenuItemClick($event)"></app-context-menu>
+
+            <div class="block w-full h-36">
+              <div
+                class="flex flex-col items-center justify-center w-full h-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-200">
+                <a [href]="getSafeFileUrl(file.file_base64)" [download]="file.name" class="flex flex-col items-center">
+                  <span class="mb-2 text-4xl text-blue-600 file-icon" [ngClass]="getFileIconClass(file.type)"></span>
+                  <span>{{ file.name }}</span>
+                </a>
+              </div>
+            </div>
+            <button (click)="deleteFileAction(file.timestamp)"
+              class="absolute p-2 text-white bg-red-500 rounded-lg top-2 right-2 hover:bg-red-600">
+              Remove
+            </button>
+          </div>
+        </div>
+
+        <!-- Display message if no files -->
+        <ul *ngIf="selectedFolder && selectedFolder.images.length === 0 && selectedFolder.files.length === 0">
+          <li>No files in this {{ selectedFolder.name }}.</li>
         </ul>
       </div>
 
