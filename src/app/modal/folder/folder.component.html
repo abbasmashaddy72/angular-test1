@@ -1,0 +1,15 @@
+<div *ngIf="folderData" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-200 bg-opacity-80">
+  <div class="modal-overlay"></div>
+  <div class="w-2/4 p-4 bg-white rounded shadow-lg modal-content">
+    <h2 class="mb-4 text-2xl font-semibold">Folder List</h2>
+
+    <app-folder-list [folders]="folderData" (selectFolder)="folderToMoveOrCopy($event,type)"></app-folder-list>
+
+    <div class="flex justify-end">
+      <button (click)="modalService.closeModal()" class="px-4 py-2 text-white bg-gray-500 rounded">
+        {{ 'product-edit.button-close'| translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

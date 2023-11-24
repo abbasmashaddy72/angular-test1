@@ -1,16 +1,12 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  OnInit,
-} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { NotifierService } from 'angular-notifier';
 import { ContextMenuModel } from 'src/app/components/context-menu/context-menu.component';
+import { ModalService } from 'src/app/services/modal.service';
 
 export interface Folder {
   name: string;
-  images: ImageObject[];
-  files: FileObject[];
+  files: FileObjectBase[];
   subfolders: Folder[];
 }
 
@@ -18,14 +14,6 @@ interface FileObjectBase {
   name: string;
   timestamp: Date;
   file_base64: string;
-  type?: string | null;
-}
-
-interface ImageObject extends FileObjectBase {
-  type: string;
-}
-
-interface FileObject extends FileObjectBase {
   type: string;
 }
 
@@ -35,8 +23,10 @@ interface FileObject extends FileObjectBase {
   styleUrls: ['./storage.component.scss'],
 })
 export class StorageComponent implements OnInit {
-  private fileUploadLimit = 1048576;
-  private fileToMoveOrCopy: FileObject | null = null;
+  private readonly fileUploadLimit = 1048576;
+  private readonly localStorageKey = 'folderBasedImages';
+  private fileToMoveOrCopy: FileObjectBase | null = null;
+  private readonly notifier: NotifierService;
   newFolderName: string = '';
   newRootFolderName: string = '';
   folderData: Folder[] = [];
@@ -45,14 +35,18 @@ export class StorageComponent implements OnInit {
   rightClickMenuItems: Array<ContextMenuModel> = [];
   rightClickMenuPositionX: number = 0;
   rightClickMenuPositionY: number = 0;
+  clickEvent: string = 'copy';
 
   constructor(
-    private cdRef: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
-  ) {}
+    private sanitizer: DomSanitizer,
+    public modalService: ModalService,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService;
+  }
 
   ngOnInit() {
-    const storedData = localStorage.getItem(this.getLocalStorageKey());
+    const storedData = localStorage.getItem(this.localStorageKey);
 
     if (storedData) {
       this.folderData = JSON.parse(storedData);
@@ -60,7 +54,6 @@ export class StorageComponent implements OnInit {
       this.folderData = [
         {
           name: 'Root',
-          images: [],
           files: [],
           subfolders: [],
         },
@@ -70,26 +63,95 @@ export class StorageComponent implements OnInit {
     this.selectedFolder = this.folderData[0];
   }
 
+  @HostListener('document:click')
+  documentClick(): void {
+    this.isDisplayContextMenu = false;
+  }
+
+  getRightClickMenuStyle() {
+    return {
+      position: 'fixed',
+      left: `${this.rightClickMenuPositionX}px`,
+      top: `${this.rightClickMenuPositionY}px`,
+    };
+  }
+
+  private saveFolderData() {
+    try {
+      localStorage.setItem(
+        this.localStorageKey,
+        JSON.stringify(this.folderData)
+      );
+    } catch (error) {
+      console.error('Error saving folder data:', error);
+
+      alert(
+        'Failed to save folder data. Please try again or clear local storage.'
+      );
+      this.ngOnInit();
+    }
+  }
+
   selectFolder(folder: Folder) {
     this.selectedFolder = folder;
   }
 
-  deleteImageAction(timestamp: Date) {
-    if (this.selectedFolder) {
-      this.selectedFolder.images = this.selectedFolder.images.filter(
-        (image) => image.timestamp !== timestamp
-      );
-      this.saveFolderData();
+  emptyField(field: any) {
+    if (field === '') {
+      this.notifier.notify('error', 'Field Should not be empty');
+      return true;
     }
+    return false;
   }
 
-  deleteFileAction(timestamp: Date) {
-    if (this.selectedFolder) {
-      this.selectedFolder.files = this.selectedFolder.files.filter(
-        (file) => file.timestamp !== timestamp
-      );
-      this.saveFolderData();
+  addRootFolder() {
+    if (this.emptyField(this.newRootFolderName)) {
+      return;
     }
+    const newRootFolder: Folder = {
+      name: this.newRootFolderName,
+      files: [],
+      subfolders: [],
+    };
+
+    this.folderData.push(newRootFolder);
+    this.saveFolderData();
+    this.newRootFolderName = '';
+    this.selectFolder(newRootFolder);
+  }
+
+  addSubfolderToFolder() {
+    if (this.emptyField(this.newFolderName)) {
+      return;
+    }
+    if (!this.selectedFolder) {
+      console.error('Selected folder not found or not specified');
+      return;
+    }
+
+    const newSubfolder: Folder = {
+      name: this.newFolderName,
+      files: [],
+      subfolders: [],
+    };
+
+    this.selectedFolder.subfolders.push(newSubfolder);
+    this.saveFolderData();
+    this.newFolderName = '';
+  }
+
+  private getSelectedFolder(): Folder | null {
+    return this.selectedFolder;
+  }
+
+  getFileExtension(fileName: string): string {
+    const ext = fileName.split('.').pop();
+    return ext ? ext.toLowerCase() : '';
+  }
+
+  addFile(fileObj: FileObjectBase, folder: Folder) {
+    folder.files.push(fileObj);
+    this.saveFolderData();
   }
 
   uploadChangeAction(event: any) {
@@ -113,19 +175,14 @@ export class StorageComponent implements OnInit {
                   reader.result.toString().replace(/^data:.+;base64,/, '');
 
                 if (base64String) {
-                  const fileObj: FileObject = {
+                  const fileObj: FileObjectBase = {
                     name: file.name,
                     timestamp: new Date(),
                     file_base64: base64String,
-                    type: this.getFileExtension(file.name), // Extract and save file extension
+                    type: this.getFileExtension(file.name),
                   };
 
-                  // Check the file type and add it to the appropriate array
-                  if (file.type.startsWith('image')) {
-                    this.addImage(fileObj, selectedFolder);
-                  } else {
-                    this.addFile(fileObj, selectedFolder);
-                  }
+                  this.addFile(fileObj, selectedFolder);
                 }
               } catch (error) {
                 console.error('Error in uploadChangeAction:', error);
@@ -137,8 +194,6 @@ export class StorageComponent implements OnInit {
             alert('File too large');
           }
         }
-
-        this.cdRef.detectChanges();
       } else {
         console.error('No files selected');
       }
@@ -149,66 +204,14 @@ export class StorageComponent implements OnInit {
     }
   }
 
-  getFileExtension(fileName: string): string {
-    const ext = fileName.split('.').pop();
-    return ext ? ext.toLowerCase() : '';
-  }
-
-  addFile(fileObj: FileObject, folder: Folder) {
-    folder.files.push(fileObj);
-    this.saveFolderData();
-  }
-
-  addSubfolderToFolder() {
-    if (!this.selectedFolder) {
-      console.error('Selected folder not found or not specified');
-      return;
+  deleteFileAction(timestamp: Date) {
+    if (this.selectedFolder) {
+      this.selectedFolder.files = this.selectedFolder.files.filter(
+        (file) => file.timestamp !== timestamp
+      );
+      this.notifier.notify('warning', 'File Delete Successfully');
+      this.saveFolderData();
     }
-
-    const newSubfolder: Folder = {
-      name: this.newFolderName,
-      images: [],
-      files: [],
-      subfolders: [],
-    };
-
-    this.selectedFolder.subfolders.push(newSubfolder);
-    this.saveFolderData();
-    this.newFolderName = '';
-  }
-
-  private getSelectedFolder(): Folder | null {
-    return this.selectedFolder;
-  }
-
-  private getLocalStorageKey() {
-    return 'folderBasedImages';
-  }
-
-  addRootFolder() {
-    const newRootFolder: Folder = {
-      name: this.newRootFolderName,
-      images: [],
-      files: [],
-      subfolders: [],
-    };
-
-    this.folderData.push(newRootFolder);
-    this.saveFolderData();
-    this.newRootFolderName = '';
-    this.selectFolder(newRootFolder);
-  }
-
-  addImage(imageObj: ImageObject, folder: Folder) {
-    folder.images.push(imageObj);
-    this.saveFolderData();
-  }
-
-  private saveFolderData() {
-    localStorage.setItem(
-      this.getLocalStorageKey(),
-      JSON.stringify(this.folderData)
-    );
   }
 
   getSafeImageSource(imageBase64: string): SafeResourceUrl {
@@ -221,7 +224,12 @@ export class StorageComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
   }
 
-  getFileIconClass(fileType: string): string {
+  getSafeVideoUrl(fileBase64: string): SafeResourceUrl {
+    const fileUrl = `data:video/mp4;base64,${fileBase64}`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
+  }
+
+  getFileIconClass(fileType: string | null | undefined): string {
     switch (fileType) {
       case 'pdf':
         return 'fas fa-file-pdf';
@@ -234,7 +242,11 @@ export class StorageComponent implements OnInit {
     }
   }
 
-  showContextMenu<T extends FileObject>(event: any, file: T) {
+  setFileToMoveOrCopy(file: FileObjectBase) {
+    this.fileToMoveOrCopy = file;
+  }
+
+  showContextMenu(event: any, file: FileObjectBase): void {
     this.isDisplayContextMenu = true;
 
     this.rightClickMenuItems = [
@@ -246,67 +258,51 @@ export class StorageComponent implements OnInit {
         menuText: 'Copy',
         menuEvent: 'Handle copy',
       },
+      {
+        menuText: 'Delete',
+        menuEvent: 'Handle Delete',
+      },
     ];
 
     this.rightClickMenuPositionX = event.clientX;
     this.rightClickMenuPositionY = event.clientY;
 
-    console.log(file);
     this.setFileToMoveOrCopy(file);
-  }
-
-  getRightClickMenuStyle() {
-    return {
-      position: 'fixed',
-      left: `${this.rightClickMenuPositionX}px`,
-      top: `${this.rightClickMenuPositionY}px`,
-    };
-  }
-
-  handleMenuItemClick(event: any) {
-    switch (event.data) {
-      case this.rightClickMenuItems[0].menuEvent:
-        console.log('To handle move');
-        this.moveOrCopyFile(this.selectedFolder!, false);
-        break;
-      case this.rightClickMenuItems[1].menuEvent:
-        console.log('To handle copy');
-        this.moveOrCopyFile(this.selectedFolder!, true);
-        break;
-    }
-  }
-
-  @HostListener('document:click')
-  documentClick(): void {
-    this.isDisplayContextMenu = false;
-  }
-
-  setFileToMoveOrCopy(file: FileObject) {
-    this.fileToMoveOrCopy = file;
   }
 
   moveOrCopyFile(targetFolder: Folder, isCopy: boolean) {
     if (this.selectedFolder && this.fileToMoveOrCopy) {
-      // If it's a copy, create a new file object to avoid reference issues
       const fileToMoveOrCopy = isCopy
         ? { ...this.fileToMoveOrCopy, timestamp: new Date() }
         : this.fileToMoveOrCopy;
 
-      // Add the file to the target folder
       targetFolder.files.push(fileToMoveOrCopy);
 
-      // Remove the file from the source folder if it's a move
       if (!isCopy) {
         this.selectedFolder.files = this.selectedFolder.files.filter(
           (file) => file.timestamp !== this.fileToMoveOrCopy!.timestamp
         );
       }
 
-      // Save the changes
       this.saveFolderData();
 
-      // Clear the fileToMoveOrCopy property
       this.fileToMoveOrCopy = null;
+    }
+  }
+
+  handleMenuItemClick(event: any, file: FileObjectBase): void {
+    switch (event.data) {
+      case 'Handle move':
+        this.clickEvent = 'move';
+        this.modalService.openModal();
+        break;
+      case 'Handle copy':
+        this.clickEvent = 'copy';
+        this.modalService.openModal();
+        break;
+      case 'Handle Delete':
+        this.deleteFileAction(file.timestamp);
+        break;
     }
   }
 }
