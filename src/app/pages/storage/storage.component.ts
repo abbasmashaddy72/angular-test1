@@ -28,7 +28,6 @@ export class StorageComponent implements OnInit {
   private fileToMoveOrCopy: FileObjectBase | null = null;
   private readonly notifier: NotifierService;
   newFolderName: string = '';
-  newRootFolderName: string = '';
   folderData: Folder[] = [];
   selectedFolder: Folder | null = null;
   isDisplayContextMenu: boolean = false;
@@ -104,22 +103,6 @@ export class StorageComponent implements OnInit {
     return false;
   }
 
-  addRootFolder() {
-    if (this.emptyField(this.newRootFolderName)) {
-      return;
-    }
-    const newRootFolder: Folder = {
-      name: this.newRootFolderName,
-      files: [],
-      subfolders: [],
-    };
-
-    this.folderData.push(newRootFolder);
-    this.saveFolderData();
-    this.newRootFolderName = '';
-    this.selectFolder(newRootFolder);
-  }
-
   addSubfolderToFolder() {
     if (this.emptyField(this.newFolderName)) {
       return;
@@ -137,6 +120,7 @@ export class StorageComponent implements OnInit {
 
     this.selectedFolder.subfolders.push(newSubfolder);
     this.saveFolderData();
+    this.notifier.notify('success', 'Folder Created Successfully');
     this.newFolderName = '';
   }
 

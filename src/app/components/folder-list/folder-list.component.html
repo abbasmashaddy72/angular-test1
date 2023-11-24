@@ -2,8 +2,10 @@
   <li *ngFor="let folder of folders" class="ml-2">
     <button class="px-2 py-1 font-bold rounded focus:outline-none"
       [ngClass]="[folder.name == selectedFolder?.name ? 'bg-blue-500 text-white' : '']"
-      (click)="onSelectFolder(folder)">{{
-      folder.name }}</button>
+      (click)="onSelectFolder(folder)">
+      <span class="text-lg fas fa-folder"
+        [ngClass]="[folder.name == selectedFolder?.name ? 'text-white' : 'text-blue-600']"></span>
+      {{folder.name }}</button>
     <app-folder-list *ngIf="folder.subfolders.length > 0" [folders]="folder.subfolders"
       [selectedFolder]="selectedFolder" (selectFolder)="onSelectFolder($event)"></app-folder-list>
   </li>
