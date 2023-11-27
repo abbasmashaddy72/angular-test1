@@ -37,6 +37,9 @@ export class StorageComponent implements OnInit {
   clickEvent: string = 'copy';
   selectedFileType: any;
   selectedFileBase64: any;
+  selectedFileName: any;
+  folderHistory: any[] = [];
+
   constructor(
     public modalService: ModalService,
     notifierService: NotifierService
@@ -92,6 +95,9 @@ export class StorageComponent implements OnInit {
   }
 
   selectFolder(folder: Folder) {
+    this.folderHistory.push({
+      selectedFolder: this.selectedFolder,
+    });
     this.selectedFolder = folder;
   }
 
@@ -274,9 +280,20 @@ export class StorageComponent implements OnInit {
     }
   }
 
-  openFileViewerModal(type: any, base64: any): void {
+  openFileViewerModal(type: any, base64: any, name: any): void {
     this.selectedFileType = type;
     this.selectedFileBase64 = base64;
+    this.selectedFileName = name;
     this.modalService.openModal('file-viewer-modal');
+  }
+
+  previousFolder(): void {
+    const previousFolderState = this.folderHistory.pop();
+
+    if (previousFolderState) {
+      this.selectedFolder = previousFolderState.selectedFolder;
+    } else {
+      this.selectedFolder = null;
+    }
   }
 }

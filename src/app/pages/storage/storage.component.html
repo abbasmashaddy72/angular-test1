@@ -1,67 +1,63 @@
-<div class="container w-screen p-2 pb-10 mx-auto bg-white rounded-md">
-  <div class="p-4">
-    <div class="flex">
+<div class="container w-screen p-6 pb-10 mx-auto bg-white rounded-md">
+  <div class="flex items-center justify-between">
+    <button (click)="previousFolder()" class="px-4 py-2 text-white bg-blue-600 rounded">
+      Back
+    </button>
+    <h2 *ngIf="selectedFolder" class="mb-2 text-lg font-semibold">Selected Folder: {{ selectedFolder.name }}</h2>
 
-      <div class="w-1/4 pr-4">
-        <h2 class="mb-2 text-lg font-semibold">Folders</h2>
-        <div class="mb-2">
-          <label class="block mb-2 text-sm font-medium text-gray-900" for="newFolderName">New Folder
-            Name</label>
-          <div class="flex items-center">
-            <input [(ngModel)]="newFolderName"
-              class="w-48 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
-              id="newFolderName" type="text">
-            <button class="p-2 ml-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-              (click)="addSubfolderToFolder()">Add
-              Folder</button>
-          </div>
-        </div>
-        <app-folder-list [folders]="folderData" (selectFolder)="selectFolder($event)"></app-folder-list>
+    <div class="flex justify-between mb-2">
+      <div>
+        <label class="block mb-2 text-sm font-medium text-gray-900" for="image-upload">Upload file</label>
+        <input (change)="uploadChangeAction($event)"
+          class="block w-48 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+          id="image-upload" type="file" multiple>
       </div>
+    </div>
 
-      <div class="w-3/4">
-        <h2 *ngIf="selectedFolder" class="mb-2 text-lg font-semibold">Selected Folder: {{ selectedFolder.name }}</h2>
-
-        <div class="flex justify-between mb-2">
-          <div>
-            <label class="block mb-2 text-sm font-medium text-gray-900" for="image-upload">Upload file</label>
-            <input (change)="uploadChangeAction($event)"
-              class="block w-48 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-              id="image-upload" type="file" multiple>
-          </div>
-        </div>
-
-        <!-- Display All files -->
-        <h1 class="my-2 text-lg font-semibold text-gray-600">All Files</h1>
-        <div *ngIf="selectedFolder && selectedFolder.files.length !== 0" class="grid grid-cols-4 gap-x-2 gap-y-4">
-          <div *ngFor="let file of selectedFolder.files" class="relative group"
-            (contextmenu)="showContextMenu($event, file);false">
-            <app-context-menu *ngIf="rightClickMenuItems.length > 0 && isDisplayContextMenu"
-              [ngStyle]="getRightClickMenuStyle()" [contextMenuItems]="rightClickMenuItems"
-              (onContextMenuItemClick)="handleMenuItemClick($event,file)"></app-context-menu>
-
-            <div class="block w-full h-36">
-              <div
-                class="flex flex-col items-center justify-center w-full h-full text-gray-700 bg-white border border-gray-300 rounded-md shadow-lg hover:bg-gray-200">
-                <div *ngIf="file.type !== 'image'" (click)="openFileViewerModal(file.type,file.file_base64)"
-                  class="flex flex-col items-center cursor-pointer">
-                  <span class="mb-2 text-4xl text-blue-600 file-icon" [ngClass]="getFileIconClass(file.ext)"></span>
-                  <span>{{ file.name }}</span>
-                </div>
-
-                <img *ngIf="file.type === 'image'" [src]="file.file_base64"
-                  class="object-cover w-full transition duration-300 rounded-md shadow-xl h-36 group-hover:opacity-75" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Display message if no files -->
-        <ul *ngIf="selectedFolder && selectedFolder.files.length === 0">
-          <li>No files in this {{ selectedFolder.name }}.</li>
-        </ul>
+    <div class="mb-2">
+      <label class="block mb-2 text-sm font-medium text-gray-900" for="newFolderName">New Folder
+        Name</label>
+      <div class="flex items-center">
+        <input [(ngModel)]="newFolderName"
+          class="w-48 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
+          id="newFolderName" type="text">
+        <button class="p-2 ml-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+          (click)="addSubfolderToFolder()">Add
+          Folder</button>
       </div>
+    </div>
+  </div>
 
+  <div class="grid grid-cols-6 gap-4">
+    <!-- Folders -->
+    <div *ngFor="let folder of selectedFolder?.subfolders" (click)="selectFolder(folder)"
+      class="flex flex-col items-center justify-center p-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-lg cursor-pointer hover:bg-gray-200 h-36">
+      <span class="mb-2 text-4xl text-blue-600 fas fa-folder"></span>
+      <span>{{ folder.name }}</span>
+    </div>
+
+    <!-- Files -->
+    <div *ngFor="let file of selectedFolder?.files" class="relative group"
+      (contextmenu)="showContextMenu($event, file);false">
+      <app-context-menu *ngIf="rightClickMenuItems.length > 0 && isDisplayContextMenu"
+        [ngStyle]="getRightClickMenuStyle()" [contextMenuItems]="rightClickMenuItems"
+        (onContextMenuItemClick)="handleMenuItemClick($event,file)"></app-context-menu>
+
+      <div
+        class="flex flex-col items-center justify-center text-gray-700 bg-white border border-gray-300 rounded-md shadow-lg hover:bg-gray-200 h-36">
+        <div *ngIf="file.type !== 'image'" (click)="openFileViewerModal(file.type,file.file_base64,file.name)"
+          class="flex flex-col items-center cursor-pointer">
+          <span class="mb-2 text-4xl text-blue-600 file-icon" [ngClass]="getFileIconClass(file.ext)"></span>
+          <span>{{ file.name }}</span>
+        </div>
+
+        <img *ngIf="file.type === 'image'" [src]="file.file_base64"
+          (click)="openFileViewerModal(file.type,file.file_base64,file.name)"
+          class="object-cover w-full transition duration-300 rounded-md shadow-xl cursor-pointer h-36 group-hover:opacity-75" />
+      </div>
+    </div>
+    <div *ngIf="selectedFolder && selectedFolder.files.length === 0" class="flex justify-center col-span-6 mt-4">
+      <p class="text-lg font-medium">No files in this {{ selectedFolder.name }}.</p>
     </div>
   </div>
 </div>
@@ -70,4 +66,4 @@
   folderData" [type]="clickEvent"></app-folder>
 
 <app-file-viewer-modal *ngIf="modalService.type === 'file-viewer-modal' && (modalService.isModalOpen$ | async)"
-  [fileType]="selectedFileType" [fileSrc]="selectedFileBase64"></app-file-viewer-modal>
+  [fileType]="selectedFileType" [fileSrc]="selectedFileBase64" [fileName]="selectedFileName"></app-file-viewer-modal>

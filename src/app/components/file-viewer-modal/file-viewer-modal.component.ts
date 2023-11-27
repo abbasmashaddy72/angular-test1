@@ -10,6 +10,7 @@ import { ModalService } from 'src/app/services/modal.service';
 export class FileViewerModalComponent {
   @Input() fileType: string = '';
   @Input() fileSrc: string = '';
+  @Input() fileName: string = '';
 
   constructor(
     public modalService: ModalService,
