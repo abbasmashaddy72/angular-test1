@@ -1,6 +1,7 @@
 <div class="container w-screen p-6 pb-10 mx-auto bg-white rounded-md">
   <div class="flex items-center justify-between">
-    <button (click)="previousFolder()" class="px-4 py-2 text-white bg-blue-600 rounded">
+    <button (click)="previousFolder()" *ngIf="selectedFolder?.name != 'Root'"
+      class="px-4 py-2 text-white bg-blue-600 rounded">
       Back
     </button>
     <h2 *ngIf="selectedFolder" class="mb-2 text-lg font-semibold">Selected Folder: {{ selectedFolder.name }}</h2>

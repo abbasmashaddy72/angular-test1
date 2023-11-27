@@ -95,10 +95,12 @@ export class StorageComponent implements OnInit {
   }
 
   selectFolder(folder: Folder) {
-    this.folderHistory.push({
-      selectedFolder: this.selectedFolder,
-    });
     this.selectedFolder = folder;
+    if (folder.name != 'Root') {
+      this.folderHistory.push({
+        selectedFolder: this.selectedFolder,
+      });
+    }
   }
 
   emptyField(field: any) {
@@ -293,7 +295,7 @@ export class StorageComponent implements OnInit {
     if (previousFolderState) {
       this.selectedFolder = previousFolderState.selectedFolder;
     } else {
-      this.selectedFolder = null;
+      this.selectedFolder = this.folderData[0];
     }
   }
 }
