@@ -1,5 +1,4 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NotifierService } from 'angular-notifier';
 import { ContextMenuModel } from 'src/app/components/context-menu/context-menu.component';
 import { ModalService } from 'src/app/services/modal.service';
@@ -13,7 +12,8 @@ export interface Folder {
 interface FileObjectBase {
   name: string;
   timestamp: Date;
-  file_base64: string;
+  file_base64: any;
+  ext: string;
   type: string;
 }
 
@@ -35,9 +35,9 @@ export class StorageComponent implements OnInit {
   rightClickMenuPositionX: number = 0;
   rightClickMenuPositionY: number = 0;
   clickEvent: string = 'copy';
-
+  selectedFileType: any;
+  selectedFileBase64: any;
   constructor(
-    private sanitizer: DomSanitizer,
     public modalService: ModalService,
     notifierService: NotifierService
   ) {
@@ -138,7 +138,7 @@ export class StorageComponent implements OnInit {
     this.saveFolderData();
   }
 
-  uploadChangeAction(event: any) {
+  async uploadChangeAction(event: any) {
     const uploadInput = event.target;
     const selectedFolder = this.getSelectedFolder();
 
@@ -154,16 +154,15 @@ export class StorageComponent implements OnInit {
 
             reader.onloadend = () => {
               try {
-                const base64String =
-                  reader.result &&
-                  reader.result.toString().replace(/^data:.+;base64,/, '');
+                const base64String = reader.result;
 
                 if (base64String) {
                   const fileObj: FileObjectBase = {
                     name: file.name,
                     timestamp: new Date(),
                     file_base64: base64String,
-                    type: this.getFileExtension(file.name),
+                    ext: this.getFileExtension(file.name),
+                    type: file.type.split('/')[0],
                   };
 
                   this.addFile(fileObj, selectedFolder);
@@ -196,21 +195,6 @@ export class StorageComponent implements OnInit {
       this.notifier.notify('warning', 'File Delete Successfully');
       this.saveFolderData();
     }
-  }
-
-  getSafeImageSource(imageBase64: string): SafeResourceUrl {
-    const imageUrl = `data:image/png;base64,${imageBase64}`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(imageUrl);
-  }
-
-  getSafeFileUrl(fileBase64: string): SafeResourceUrl {
-    const fileUrl = `data:application/octet-stream;base64,${fileBase64}`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
-  }
-
-  getSafeVideoUrl(fileBase64: string): SafeResourceUrl {
-    const fileUrl = `data:video/mp4;base64,${fileBase64}`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
   }
 
   getFileIconClass(fileType: string | null | undefined): string {
@@ -278,15 +262,21 @@ export class StorageComponent implements OnInit {
     switch (event.data) {
       case 'Handle move':
         this.clickEvent = 'move';
-        this.modalService.openModal();
+        this.modalService.openModal('app-folder');
         break;
       case 'Handle copy':
         this.clickEvent = 'copy';
-        this.modalService.openModal();
+        this.modalService.openModal('app-folder');
         break;
       case 'Handle Delete':
         this.deleteFileAction(file.timestamp);
         break;
     }
+  }
+
+  openFileViewerModal(type: any, base64: any): void {
+    this.selectedFileType = type;
+    this.selectedFileBase64 = base64;
+    this.modalService.openModal('file-viewer-modal');
   }
 }

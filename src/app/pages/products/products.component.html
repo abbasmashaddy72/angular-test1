@@ -47,4 +47,5 @@
   </table>
 </div>
 
-<app-modal-product *ngIf="modalService.isModalOpen$ | async" [editedProduct]="editedProduct.seqno"></app-modal-product>
+<app-modal-product *ngIf="modalService.type === 'edit-modal-product' && (modalService.isModalOpen$ | async)"
+  [editedProduct]="editedProduct.seqno"></app-modal-product>

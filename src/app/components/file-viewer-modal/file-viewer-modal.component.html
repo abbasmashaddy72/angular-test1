@@ -1,0 +1,21 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-200 bg-opacity-80">
+  <div class="modal-overlay"></div>
+  <div class="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+    <div class="w-6/12 p-4 bg-white rounded-lg shadow-lg h-5/6">
+      <div *ngIf="fileType === 'video'">
+        <video [src]="fileSrc" controls class="w-full" autoplay></video>
+      </div>
+      <div *ngIf="fileType === 'audio'">
+        <audio [src]="fileSrc" controls class="w-full" autoplay></audio>
+      </div>
+      <div *ngIf="fileType === 'application'">
+        <iframe [src]="getSafeFileSrc()" class="w-full" height="650" frameborder="0"></iframe>
+      </div>
+      <div class="flex justify-end mt-2">
+        <button (click)="modalService.closeModal()" class="px-4 py-2 text-white bg-gray-500 rounded">
+          {{ 'product-edit.button-close'| translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

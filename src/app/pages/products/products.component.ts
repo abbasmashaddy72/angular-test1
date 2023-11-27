@@ -45,6 +45,6 @@ export class ProductsComponent implements OnInit {
 
   openEditModal(product: any) {
     this.editedProduct = { ...product };
-    this.modalService.openModal();
+    this.modalService.openModal('edit-modal-product');
   }
 }

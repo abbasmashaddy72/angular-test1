@@ -27,6 +27,7 @@ import { StorageComponent } from './pages/storage/storage.component';
 import { TranslationService } from './services/translation.service';
 import { SharedModule } from './shared/shared.module';
 import { FolderComponent } from './modal/folder/folder.component';
+import { FileViewerModalComponent } from './components/file-viewer-modal/file-viewer-modal.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -46,6 +47,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     FolderListComponent,
     ContextMenuComponent,
     FolderComponent,
+    FileViewerModalComponent,
   ],
   imports: [
     BrowserModule,

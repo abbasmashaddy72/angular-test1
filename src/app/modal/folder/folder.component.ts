@@ -50,7 +50,7 @@ export class FolderComponent implements OnInit {
       this.selectedFolder = previousFolderState.selectedFolder;
     } else {
       this.showSubFolders = false;
-      this.selectedFolder = null; // or set it to the root folder or any default value
+      this.selectedFolder = null;
     }
   }
 }
