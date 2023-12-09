@@ -31,7 +31,9 @@ npm install
 ## Run the Application
 - Use the Angular CLI to serve your application locally:
 
-`ng serve`
+```
+ng serve
+```
 
 - By default, this will start the development server, and you can access your Angular application in your web browser at [http://localhost:4200/](http://localhost:4200/).
 
